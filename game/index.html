@@ -3,17 +3,80 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ember Pact — a duel of elemental cards</title>
-<style>
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #0e1a14; }
-  #game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
-  /* Read aloud, never shown: the status line screen readers announce. */
-  #status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-</style>
+<title>Ember Pact — an elemental card duel</title>
+<link rel="stylesheet" href="./src/table.css">
 </head>
 <body>
-<canvas id="game" aria-label="Ember Pact: a duel of elemental cards against Rook, the Ashen Warden"></canvas>
-<p id="status" role="status" aria-live="polite"></p>
-<script type="module" src="./src/main.js"></script>
+<div id="table">
+  <div id="topbar">
+    <div class="hero" id="rookhero">
+      <div class="portrait">🧙</div>
+      <div>
+        <div class="who">Rook, the Ashen Warden</div>
+        <div class="lifebar"><i id="rooklifebar" style="width:100%"></i></div>
+        <div class="lifenum" id="rooklife">30 / 30</div>
+      </div>
+    </div>
+    <div id="mana">
+      <div class="label">MANA</div>
+      <div id="crystals"></div>
+      <div id="turninfo">Turn 1 · Your move</div>
+      <div id="resonance" title="Cards played this turn per element — play a second of one element to wake its Resonance"></div>
+    </div>
+    <div class="hero" id="yourhero" style="justify-content:flex-end">
+      <div style="text-align:right">
+        <div class="who">You, the Ember-Bound</div>
+        <div class="lifebar you"><i id="yourlifebar" style="width:100%"></i></div>
+        <div class="lifenum" id="yourlife">30 / 30</div>
+      </div>
+      <div class="portrait">🔥</div>
+    </div>
+  </div>
+
+  <div class="row" id="rookhand"></div>
+  <div class="row"><div class="boardzone" id="rookboard"></div></div>
+
+  <div id="midstrip">
+    <div id="intent">Welcome to the pact. Click “Begin the Duel” to play.</div>
+    <div id="logline"></div>
+    <button id="endturn" type="button">End Turn ⏎</button>
+    <button id="soundbtn" type="button">🔊 Sound on</button>
+  </div>
+
+  <div class="row"><div class="boardzone" id="yourboard"></div></div>
+  <div class="row" id="yourhand"></div>
+
+  <div id="banner"></div>
+</div>
+
+<div class="overlay" id="titleoverlay">
+  <h1>EMBER PACT</h1>
+  <h2>An elemental card duel against Rook, the Ashen Warden</h2>
+  <div class="rules">
+    <b>How to play:</b> You and Rook have <b>30 life</b>. Each turn your mana
+    grows by 1 (up to 10) and you draw a card. Play minions and spells from
+    your hand, then strike with minions that have waited a turn.
+    <b>Guard</b> minions must be faced first. Play two cards of one element in
+    a turn to wake its <b>Resonance</b> — all your minions of that element gain
+    +1 attack. Reduce Rook to 0 life to win.
+    <br><br>
+    Click a card to play it · click a ready minion, then an enemy, to attack ·
+    <b>Space</b> ends your turn · keys <b>1–9</b> play cards from your hand.
+  </div>
+  <div class="elementkey" id="elementkey"></div>
+  <button class="bigbtn" id="startbtn" type="button">Begin the Duel</button>
+  <div class="foot">Original game · art drawn in code · sounds synthesised live · plays offline</div>
+</div>
+
+<div class="overlay hidden" id="endoverlay">
+  <h1 id="endtitle">VICTORY</h1>
+  <h2 id="endsub"></h2>
+  <div id="endstats"></div>
+  <button class="bigbtn" id="againbtn" type="button">Play Again</button>
+  <div class="foot">Ember Pact · a duel against Rook, the Ashen Warden</div>
+</div>
+
+<p id="status" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)"></p>
+<script type="module" src="./src/boot.js"></script>
 </body>
 </html>
